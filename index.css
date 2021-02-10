@@ -1,0 +1,57 @@
+/* reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+ul,
+ol {
+  list-style-type: none;
+}
+
+/* common */
+h1 {
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-size: 1.2rem;
+}
+
+/* JavaScript에서 관리 */
+
+.none {
+  display: none;
+}
+
+/* body */
+
+body {
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+/* mainspace */
+
+.mainspace {
+  max-width: 1028px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+#clock {
+  margin: 2rem 0;
+}
+
+#welcome {
+  margin-bottom: 1.5rem;
+}
+
+#name-form,
+#list-form {
+  margin-bottom: 1rem;
+}

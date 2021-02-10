@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <div class="mainspace">
+      <h1 id="clock">00:00</h1>
+      <h2 id="welcome"></h2>
+      <form id="name-form">
+        <input type="text" placeholder="이름을 입력하세요" />
+      </form>
+      <form id="list-form">
+        <input type="text" placeholder="할 일을 입력하세요" />
+      </form>
+      <span id="weather"></span>
+      <section class="todo-space-wrap">
+        <section class="todo-space" id="before">
+          <h3>시작 전</h3>
+          <ul id="todo-list"></ul>
+        </section>
+        <section class="todo-space" id="ing">
+          <h3>하는중</h3>
+          <ul id="todo-list"></ul>
+        </section>
+        <section class="todo-space" id="finished">
+          <h3>완료</h3>
+          <ul id="todo-list"></ul>
+        </section>
+      </section>
+    </div>
+    <script src="clock.js"></script>
+    <script src="name.js"></script>
+  </body>
+</html>
