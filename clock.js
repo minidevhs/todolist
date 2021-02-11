@@ -1,3 +1,6 @@
+// import './styles.css';
+
+
 const clock = document.querySelector("#clock");
 
 const getTime = () => {
