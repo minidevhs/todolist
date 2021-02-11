@@ -34,9 +34,9 @@ const DEFAULT_ING_COLOR = palette.green[0];
 const DEFAULT_FINISHED_COLOR = palette.blue[0];
 
 
-for (let i = 0; i < colorName.length; i++) {
 
 function makePalette() {
+  for (let i = 0; i < colorName.length; i++) {
     const colorGroup = document.createElement("section");
     colorGroup.className = "color-group";
     for (let j = 0; j < COLOR_TYPE_LENGTH; j++) {
