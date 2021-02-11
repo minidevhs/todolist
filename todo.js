@@ -139,6 +139,10 @@ const loadColors = () => {
 const handleTodoSubmit = (event) => {
     event.preventDefault();
     const todo = todoInput.value;
+    if (todo === "") {
+        alert("💥💥💥");
+        return;
+    }
     addTodo(todo);
     todoInput.value = "";
 };

@@ -22,6 +22,10 @@ const welcome = (name) => {
 const handleNameSubmit = (event) => {
     event.preventDefault();
     const name = nameInput.value;
+    if (name === "") {
+        alert("💥💥💥");
+        return;
+    }
     welcome(name);
     saveName(name);
     nameForm.classList.add("none");
