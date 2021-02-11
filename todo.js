@@ -31,6 +31,11 @@ function dragLeave() {
 
 function dragDrop(event) {
     this.className = "empty";
+    if (selected.className === "color-box") {
+        this.children[1].style.backgroundColor = selected.style.backgroundColor;
+        localStorage.setItem(this.id, selected.style.backgroundColor);
+        return;
+    }
     this.children[1].append(selected);
 }
 
@@ -74,7 +79,7 @@ const addTodo = (todo) => {
 
     button.addEventListener("click", (event) => {
         const clickedBtn = event.target;
-        const li = clickedBtn.parentNode;
+        const li = clickedBtn.parentNode.parentNode;
         li.remove();
         todos = todos.filter((todo) => {
             return todo.id !== parseInt(li.id);
@@ -82,6 +87,17 @@ const addTodo = (todo) => {
 
         saveTodo(todos);
     });
+
+
+    button.addEventListener("mouseover", function () {
+        button.children[0].className = 'fas fa-window-close';
+    });
+
+    button.addEventListener("mouseout", function () {
+        button.children[0].className = 'far fa-window-close';
+    });
+    
+
 
     li.id = nextId;
     li.appendChild(span);
@@ -93,10 +109,6 @@ const addTodo = (todo) => {
 };
 
 
-
-
-
-
 const loadTodos = () => {
     const parsedTodos = JSON.parse(localStorage.getItem("todos"));
     if (parsedTodos !== null) {
@@ -106,6 +118,24 @@ const loadTodos = () => {
     }
 };
 
+
+const loadColors = () => {
+    for (let i = 0; i < todoSpaces.length; i++) {
+        if (localStorage.getItem(todoSpaces[i].id)) {
+            todoSpaces[i].children[1].style.backgroundColor = localStorage.getItem(
+                todoSpaces[i].id,
+            );
+        }
+    }
+};
+
+
+
+
+
+
+
+
 const handleTodoSubmit = (event) => {
     event.preventDefault();
     const todo = todoInput.value;
@@ -113,5 +143,10 @@ const handleTodoSubmit = (event) => {
     todoInput.value = "";
 };
 
-todoForm.addEventListener("submit", handleTodoSubmit);
-loadTodos();
+function init() {
+    todoForm.addEventListener("submit", handleTodoSubmit);
+    loadTodos();
+    loadColors;
+}
+
+init();

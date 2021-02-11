@@ -20,49 +20,45 @@
   </head>
   <body>
     <div class="mainspace">
-      <h1 id="clock"></h1>
-      <h2 id="welcome"></h2>
-      <form id="name-form">
-        <input type="text" placeholder="이름을 입력하세요" />
-      </form>
-      <form id="list-form">
-        <input type="text" placeholder="할 일을 입력하세요" />
-      </form>
-      <span id="weather"></span>
-      <section class="todo-space-wrap">
-        <section class="todo-space" id="before">
-          <h3>시작 전</h3>
-          <ul id="todo-list"></ul>
+      <main>
+        <h1 id="clock"></h1>
+        <h2 id="welcome"></h2>
+        <form id="name-form">
+          <input type="text" placeholder="이름을 입력하세요" />
+        </form>
+        <form id="list-form">
+          <input type="text" placeholder="할 일을 입력하세요" />
+        </form>
+        <span id="weather"></span>
+        <section class="todo-space-wrap">
+          <section class="todo-space" id="before">
+            <h3>시작 전</h3>
+            <ul id="todo-list"></ul>
+          </section>
+          <section class="todo-space" id="ing">
+            <h3>하는중</h3>
+            <ul></ul>
+          </section>
+          <section class="todo-space" id="finished">
+            <h3>완료</h3>
+            <ul></ul>
+          </section>
         </section>
-        <section class="todo-space" id="ing">
-          <h3>하는중</h3>
-          <ul id="todo-list"></ul>
-        </section>
-        <section class="todo-space" id="finished">
-          <h3>완료</h3>
-          <ul id="todo-list"></ul>
-        </section>
+        <section class="bg-wrap"></section>
+      </main>
+      <section class="sideoption">
+        <div class="toggle">
+          <i class="fas fa-bars"></i>
+        </div>
       </section>
-      <button id="bg-color-btn">배경색 선택하기</button>
-      <section class="bg-wrap">
-        <section class="color-group" id="gray">
-          <div class="color-box" id="gray-0"></div>
-          <div class="color-box" id="gray-1"></div>
-          <div class="color-box" id="gray-2"></div>
-          <div class="color-box" id="gray-3"></div>
-          <div class="color-box" id="gray-4"></div>
-          <div class="color-box" id="gray-5"></div>
-          <div class="color-box" id="gray-6"></div>
-          <div class="color-box" id="gray-7"></div>
-          <div class="color-box" id="gray-8"></div>
-          <div class="color-box" id="gray-9"></div>
-        </section>
-      </section>
+      <!-- //sideoption-menu -->
     </div>
+    <!-- //mainspace -->
     <script src="clock.js"></script>
     <script src="name.js"></script>
     <script src="todo.js"></script>
     <script src="weather.js"></script>
-    <script src="background.js"></script>
+    <script src="color.js"></script>
+    <script src="sideoption.js"></script>
   </body>
 </html>
