@@ -1,5 +1,5 @@
-
-const clock = document.querySelector("#clock");
+const time = document.querySelector("#time");
+const dateWrap = document.querySelector("#date");
 
 const getTime = () => {
     const date = new Date();
@@ -7,6 +7,10 @@ const getTime = () => {
     let minute = date.getMinutes();
     let sec = date.getSeconds();
     let ap = "AM";
+    let month = date.getMonth() + 1;
+    let _date = date.getDate();
+    let dayArray = ["일", "월", "화", "수", "목", "금", "토"];
+    let day = dayArray[date.getDay()];
 
     if (hour > 12){
         hour = hour - 12;
@@ -18,11 +22,12 @@ const getTime = () => {
     minute = minute < 10 ? `0${minute}` : minute;
     sec = sec < 10 ? `0${sec}` : sec;
 
-    clock.innerHTML = `${hour}:${minute}:${sec} ${ap}`;
+    time.innerHTML = `${hour} : ${minute} ${ap}`;
+    dateWrap.innerHTML = `${month}월 ${_date}일 ${day}요일`;
 };
 
 function init() {
-    setInterval(getTime, 1000);
+    getTime();
 }
 
 init();
