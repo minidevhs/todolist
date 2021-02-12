@@ -28,7 +28,7 @@
           <input type="text" placeholder="이름을 입력하세요" />
         </form>
       </header>
-      <main id="main">
+      <main>
         <form id="list-form">
           <input type="text" placeholder="할 일을 입력하세요" />
         </form>
@@ -46,15 +46,18 @@
             <ul></ul>
           </section>
         </section>
-        <section class="bg-wrap"></section>
+        <section class="bg-wrap tab"></section>
         <aside class="sideoption">
           <div href="#" class="toggle">
             <i class="fas fa-bars"></i>
           </div>
-          <button class="info">설명서</button>
           <button class="reset">초기화</button>
-          <div class="fonts">
-            <h2>글씨체</h2>
+          <div class="tab-menu">
+            <button class="showPalette">팔레트</button>
+            <button class="showFont">글씨체</button>
+            <button class="info">설명서</button>
+          </div>
+          <div class="fonts tab">
             <div class="font malang">한컴말랑말랑</div>
             <div class="font melona">빙그레메로나</div>
             <div class="font taom">빙그레따옴</div>
@@ -62,20 +65,15 @@
             <div class="font welltoday">잘풀리는 오늘</div>
             <div class="font wellday">잘풀리는 하루</div>
           </div>
+          <div class="info-desc tab">
+            <ol>
+              <li>1. Drag & Drop으로 todo의 상태와 색상을 바꿀 수 있어요.</li>
+              <li>2. 색상을 클릭하면 배경색을 바꿀 수 있어요.</li>
+              <li>3. 맘에 드는 글씨체도 골라보세요.</li>
+            </ol>
+          </div>
         </aside>
       </main>
-      <section>
-        <div id="popup" class="hide">
-          <div class="content">
-            <p>
-              1. Drag and Drop으로 todo의 상태와 색상을 바꿀 수 있어요.
-              <br />2. 색상을 클릭하면 배경색을 바꿀 수 있어요. <br />3. 맘에
-              드는 글씨체도 골라보세요.
-            </p>
-            <button class="close">닫기</button>
-          </div>
-        </div>
-      </section>
     </div>
     <!-- //mainspace -->
     <script src="./js/clock.js"></script>
@@ -84,6 +82,5 @@
     <script src="./js/weather.js"></script>
     <script src="./js/color.js"></script>
     <script src="./js/sideoption.js"></script>
-    <script src="./js/popup.js"></script>
   </body>
 </html>

@@ -3,6 +3,15 @@ const toggleBtn = sideoption.querySelector(".toggle");
 const resetBtn = sideoption.querySelector(".reset");
 const fontWrap = sideoption.querySelector(".fonts");
 const fonts = sideoption.querySelectorAll(".font");
+const showPalette = sideoption.querySelector(".showPalette");
+const showFont = sideoption.querySelector(".showFont");
+const infoBtn = document.querySelector(".info");
+const infoDesc = document.querySelector(".info-desc");
+const mainspace = document.querySelector(".mainspace");
+
+
+
+
 
 toggleBtn.addEventListener("click", function () {
     if (sideoption.classList.contains("active")) {
@@ -19,6 +28,7 @@ function openNav() {
     bgWrap.style.right = "1rem";
     fontWrap.style.right = "50%";
     fontWrap.style.transform = "translateX(50%)";
+    infoDesc.style.right = "1rem";
 }
 
 function closeNav() {
@@ -26,6 +36,8 @@ function closeNav() {
     toggleBtn.innerHTML = '<i class="fas fa-bars"></i>';
     bgWrap.style.right = "-300px";
     fontWrap.style.right = "-200px";
+    infoDesc.style.right = "-500px";
+    // mainspace.style.margin = "0 auto";
 }
 
 
@@ -64,7 +76,37 @@ function loadFont() {
     }
   }
 
+function openTab(event) {
+    var i;
+    var x = document.getElementsByClassName("tab");
+    for (i = 0; i < x.length; i++) {
+        x[i].style.display = "none";
+    }
+    if (event.target.classList.contains("showPalette")) {
+        bgWrap.style.display ="block";
+        showPalette.classList.add("current-tab");
+        showFont.classList.remove("current-tab");
+        infoBtn.classList.remove("current-tab");
+    } else if (event.target.classList.contains("showFont")) {
+        fontWrap.style.display = "block"
+        showFont.classList.add("current-tab");
+        showPalette.classList.remove("current-tab");
+        infoBtn.classList.remove("current-tab");
+    } else {
+        infoDesc.style.display = 'block';
+        showFont.classList.remove('current-tab');
+        showPalette.classList.remove('current-tab');
+        infoBtn.classList.add('current-tab');
+    }
+}
+
+showPalette.addEventListener("click", openTab);
+showFont.addEventListener("click", openTab);
+infoBtn.addEventListener("click", openTab);
+
+
 function init() {
+    showPalette.classList.add("current-tab");
     loadFont();
 }
 
