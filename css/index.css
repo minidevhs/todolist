@@ -1,0 +1,19 @@
+@import "reset.css";
+@import "header.css";
+@import "common.css";
+@import "todo.css";
+@import "sideoption.css";
+
+/* JavaScript에서 관리 */
+
+.none {
+  display: none;
+}
+
+/*container */
+
+.mainspace {
+  max-width: 1028px;
+  margin: 0 auto;
+  text-align: center;
+}
