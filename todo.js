@@ -1,78 +1,28 @@
 const todoForm = document.querySelector("#list-form");
 const todoInput = todoForm.querySelector("input");
-const todoList = document.querySelector("#todo-list");
 const todoSpaces = document.querySelectorAll(".todo-space");
 
-
-
-for (const todoSpace of todoSpaces) {
-    todoSpace.addEventListener("dragover", dragOver);
-    todoSpace.addEventListener("dragenter", dragEnter);
-    todoSpace.addEventListener("dragleave", dragLeave);
-    todoSpace.addEventListener("drop", dragDrop);
-}
-
-
-
-
-
-function dragOver(event) {
-    event.preventDefault();
-}
-
-function dragEnter(event){
-    event.preventDefault();
-    this.className += " hovered";
-}
-
-function dragLeave() {
-    this.className = "empty";
-}
-
-function dragDrop(event) {
-    this.className = "empty";
-    if (selected.className === "color-box") {
-        this.children[1].style.backgroundColor = selected.style.backgroundColor;
-        localStorage.setItem(this.id, selected.style.backgroundColor);
-        return;
-    }
-    this.children[1].append(selected);
-}
-
-function dragStart() {
-    this.className += " hold";
-    setTimeout(() => (this.className = "invisible"), 0);
-    selected = this;
-}
-
-function dragEnd() {
-    this.className = "visible";
-}
-
-
-
-
-let todos = [];
+let before = [];
+let ing = [];
+let finished = [];
 let selected = null;
+let startSpaceType = null;
 
+const saveTodo = (type, todos) => {
+    localStorage.setItem(type, JSON.stringify(todos));
+};
 
-const saveTodo = (todos) => {
-    localStorage.setItem("todos", JSON.stringify(todos));
-} 
-
-const addTodo = (todo) => {
+const addTodo = (type, todo) => {
     const li = document.createElement("li");
     const span = document.createElement("span");
     const button = document.createElement("span");
 
-    let nextId = todos.length + 1;
+    let nextId = before.length + ing.length + finished.length + 1;
     const newTodo = {
         id: nextId,
         todo,
     };
 
-    todos.push(newTodo);
-    saveTodo(todos);
 
     span.innerText = todo;
     button.innerHTML = '<i class="far fa-window-close"></i>';
@@ -80,12 +30,29 @@ const addTodo = (todo) => {
     button.addEventListener("click", (event) => {
         const clickedBtn = event.target;
         const li = clickedBtn.parentNode.parentNode;
+        const clickedSpace = li.parentNode.parentNode.id;
         li.remove();
-        todos = todos.filter((todo) => {
-            return todo.id !== parseInt(li.id);
-        });
 
-        saveTodo(todos);
+        switch (clickedSpace) {
+            case "before":
+                before = before.filter((todo) => {
+                    return todo.id !== parseInt(li.id);
+                });
+                saveTodo("before", before);
+                break;
+            case "ing":
+                ing = ing.filter((todo) => {
+                    return todo.id !== parseInt(li.id);
+                });
+                saveTodo("ing", ing);
+                break;
+            case "finished":
+                finished = finished.filter((todo) => {
+                    return todo.id !== parseInt(li.id);
+                });
+                saveTodo("finished", finished);
+                break;
+            }
     });
 
 
@@ -98,22 +65,136 @@ const addTodo = (todo) => {
     });
     
 
-
     li.id = nextId;
     li.appendChild(span);
     li.appendChild(button);
     li.draggable = true;
     li.addEventListener("dragstart", dragStart);
     li.addEventListener("dragend", dragEnd);
-    todoList.appendChild(li);
+    
+    switch (type) {
+        case "before":
+            before.push(newTodo);
+            saveTodo("before", before);
+            todoSpaces[0].children[1].appendChild(li);
+            break;
+        case "ing":
+            ing.push(newTodo);
+            saveTodo("ing", ing);
+            todoSpaces[1].children[1].appendChild(li);
+            break;
+        case "finished":
+            finished.push(newTodo);
+            saveTodo("finished", finished);
+            todoSpaces[2].children[1].appendChild(li);
+            break;
+    }
 };
 
 
+// drag and drop
+function dragStart() {
+    this.className += " hold";
+    setTimeout(() => (this.className = "invisible"), 0);
+    selected = this;
+    startSpaceId = selected.parentNode.parentNode.id;
+}
+
+function dragEnd() {
+    this.className = "visible";
+}
+
+for (const todoSpace of todoSpaces) {
+    todoSpace.addEventListener("dragover", dragOver);
+    todoSpace.addEventListener("dragenter", dragEnter);
+    todoSpace.addEventListener("dragleave", dragLeave);
+    todoSpace.addEventListener("drop", dragDrop);
+}
+
+function dragOver(event) {
+    event.preventDefault();
+}
+
+function dragEnter(event) {
+    event.preventDefault();
+    this.className += " hovered";
+}
+
+function dragLeave() {
+    this.className = "empty";
+}
+
+function dragDrop(event) {
+    this.className = "empty";
+    if (selected.className === "color-box") {
+        this.children[1].style.backgroundColor = selected.style.backgroundColor;
+        localStorage.setItem(`${this.id}Color`, selected.style.backgroundColor);
+        return;
+    }
+    this.children[1].append(selected);
+
+    const todo = {
+        id: selected.id,
+        todo: selected.children[0].textContent,
+    };
+
+    switch (this.id) {
+        case "before":
+            before.push(todo);
+            saveTodo("before", before);
+            break;
+        case "ing":
+            ing.push(todo);
+            saveTodo("ing", ing);
+            break;
+        case "finished":
+            finished.push(todo);
+            saveTodo("finished", finished);
+            break;
+    }
+    let selectedId = parseInt(selected.id, 10);
+
+    switch (startSpaceId) {
+        case "before":
+            before = before.filter((todo) => {
+                return parseInt(todo.id) !== selectedId;
+            });
+            saveTodo("before", before);
+            break;
+        case "ing":
+            ing = ing.filter((todo) => {
+                return parseInt(todo.id) !== selectedId;
+            });
+            saveTodo("ing", ing);
+            break;
+        case "finished":
+            finished = finished.filter((todo) => {
+                return parseInt(todo.id) !== selectedId;
+            });
+            saveTodo("finished", finished);
+            break;
+    }
+    
+}
+
+
 const loadTodos = () => {
-    const parsedTodos = JSON.parse(localStorage.getItem("todos"));
-    if (parsedTodos !== null) {
-        parsedTodos.forEach((todo) => {
-            addTodo(todo.todo);
+    const before = JSON.parse(localStorage.getItem("before"));
+    const ing = JSON.parse(localStorage.getItem("ing"));
+    const finished = JSON.parse(localStorage.getItem("finished"));
+    if (before !== null) {
+        before.forEach((todo) => {
+            addTodo("before", todo.todo);
+        });
+    }
+    if (ing !== null) {
+        ing.forEach((todo) => {
+            addTodo("ing", todo.todo);
+        });
+    }
+    if (finished !== null) {
+        finished.forEach((todo) => {
+            addTodo("finished", todo.todo);
         });
     }
 };
@@ -121,19 +202,13 @@ const loadTodos = () => {
 
 const loadColors = () => {
     for (let i = 0; i < todoSpaces.length; i++) {
-        if (localStorage.getItem(todoSpaces[i].id)) {
+        if (localStorage.getItem(`${todoSpaces[i].id}Color`)) {
             todoSpaces[i].children[1].style.backgroundColor = localStorage.getItem(
-                todoSpaces[i].id,
+                `${todoSpaces[i].id}Color`
             );
         }
     }
 };
-
-
-
-
-
-
 
 
 const handleTodoSubmit = (event) => {
@@ -143,14 +218,14 @@ const handleTodoSubmit = (event) => {
         alert("💥💥💥");
         return;
     }
-    addTodo(todo);
+    addTodo("before", todo);
     todoInput.value = "";
 };
 
 function init() {
     todoForm.addEventListener("submit", handleTodoSubmit);
     loadTodos();
-    loadColors;
+    loadColors();
 }
 
 init();

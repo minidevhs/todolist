@@ -72,9 +72,9 @@ function setDefaultColor() {
     }
 
     // todo space
-    const beforeColor = localStorage.getItem("before");
-    const ingColor = localStorage.getItem("ing");
-    const finishedColor = localStorage.getItem("finished");
+    const beforeColor = localStorage.getItem("beforeColor");
+    const ingColor = localStorage.getItem("ingColor");
+    const finishedColor = localStorage.getItem("finishedColor");
 
     if (beforeColor === null) {
         todoSpaces2[0].children[1].style.backgroundColor = DEFAULT_BEFORE_COLOR;
