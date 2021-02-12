@@ -1,6 +1,62 @@
 const todoForm = document.querySelector("#list-form");
 const todoInput = todoForm.querySelector("input");
 const todoSpaces = document.querySelectorAll(".todo-space");
+const editBtns = document.querySelectorAll('.fa-edit');
+
+const editTitle = (event) => {
+    const parent = event.target.parentNode;
+    const editBtn = event.target;
+    const text = parent.children[0].textContent;
+    parent.children[0].innerHTML = `<input type="text" value="${text}"/>`;
+
+    // checkbox 만들어서 넣기
+    const i = document.createElement("i");
+    i.className = 'far fa-check-square';
+    i.addEventListener("mouseover", function () {
+        i.className = 'fas fa-check-square';
+    });
+    i.addEventListener("mouseout", function () {
+        i.className = 'far fa-check-square';
+    });
+    i.addEventListener("click", (event) => {
+        const editText = event.target.parentNode.children[0].children[0].value;
+        console.log(parent.parentNode.id);
+        switch (parent.parentNode.id) {
+            case "before":
+                localStorage.setItem("beforeTitle", editText);
+                break;
+            case "ing":
+                localStorage.setItem("ingTitle", editText);
+                break;
+            case "finished":
+                localStorage.setItem("finishedTitle", editText);
+                break;
+            default:
+                return;
+        }
+        parent.children[0].innerHTML = editText;
+        editBtn.className = 'far fa-edit';
+        parent.appendChild(editBtn);
+        // checkbox 삭제
+        event.target.remove();
+    });
+    event.target.parentNode.appendChild(i);
+    // edit button 삭제
+    event.target.remove();
+};
+
+for (editBtn of editBtns) {
+    editBtn.addEventListener("click", editTitle);
+    editBtn.addEventListener("mouseover", (event) => {
+        event.target.className = 'fas fa-edit';
+    });
+    editBtn.addEventListener("mouseout", (event) => {
+        event.target.className = 'far fa-edit';
+    });
+}
+
+
+
 
 let before = [];
 let ing = [];
@@ -104,7 +160,7 @@ const addTodo = (type, todo) => {
 
 // drag and drop
 function dragStart() {
-    this.className += " hold";
+    this.classList.add("hold");
     setTimeout(() => (this.className = "invisible"), 0);
     selected = this;
     startSpaceId = selected.parentNode.parentNode.id;
@@ -127,15 +183,15 @@ function dragOver(event) {
 
 function dragEnter(event) {
     event.preventDefault();
-    this.className += " hovered";
+    this.classList.add("hovered");
 }
 
 function dragLeave() {
-    this.className = "empty";
+    this.classList.remove("hovered");
 }
 
 function dragDrop(event) {
-    this.className = "empty";
+    this.classList.remove("hovered");
     if (selected.className === "color-box") {
         this.children[1].style.backgroundColor = selected.style.backgroundColor;
         localStorage.setItem(`${this.id}Color`, selected.style.backgroundColor);
@@ -201,6 +257,28 @@ const loadColors = () => {
     }
 };
 
+const loadTodoTitle = () => {
+    const beforeTitle = localStorage.getItem("beforeTitle");
+    const ingTitle = localStorage.getItem("ingTitle");
+    const finishedTitle = localStorage.getItem("finishedTitle");
+
+    if (beforeTitle !== null) {
+        todoSpaces[0].children[0].children[0].innerText = beforeTitle;
+    } else {
+        localStorage.setItem("beforeTitle", "시작 전");
+    }
+    if (ingTitle !== null) {
+        todoSpaces[1].children[0].children[0].innerText = ingTitle;
+    } else {
+        localStorage.setItem("ingTitle", "하는 중");
+    }
+    if (finishedTitle !== null) {
+        todoSpaces[2].children[0].children[0].innerText = finishedTitle;
+    } else {
+        localStorage.setItem("finishedTitle", "완료");
+    }
+};
+
 
 const handleTodoSubmit = (event) => {
     event.preventDefault();
@@ -217,6 +295,7 @@ function init() {
     todoForm.addEventListener("submit", handleTodoSubmit);
     loadTodos();
     loadColors();
+    loadTodoTitle();
 }
 
 init();

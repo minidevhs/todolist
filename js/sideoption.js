@@ -37,7 +37,6 @@ function closeNav() {
     bgWrap.style.right = "-300px";
     fontWrap.style.right = "-200px";
     infoDesc.style.right = "-500px";
-    // mainspace.style.margin = "0 auto";
 }
 
 
