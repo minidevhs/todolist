@@ -57,7 +57,10 @@ const addTodo = (type, todo) => {
         const clickedBtn = event.target;
         const li = clickedBtn.parentNode.parentNode;
         const clickedSpace = li.parentNode.parentNode.id;
-        li.remove();
+        li.classList.add("deleted");
+        li.addEventListener("transitionend", () => {
+            li.remove();
+        });
 
         deleteTodo(clickedSpace, li);
     });

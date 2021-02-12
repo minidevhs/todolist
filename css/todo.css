@@ -25,10 +25,13 @@
 .todo-space-wrap li {
   display: flex;
   justify-content: space-between;
-  padding: 1rem 0;
+  align-items: center;
+  padding: 1rem;
   cursor: pointer;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    transform 0.5s ease-in-out, opacity 0.8s;
+  word-break: break-all;
 }
 
 .todo-space-wrap li:hover {
@@ -36,10 +39,6 @@
 }
 
 .todo-space-wrap li span:first-child {
-  margin-left: 1rem;
-}
-
-.todo-space-wrap li span:last-child {
   margin-right: 1rem;
 }
 
@@ -48,7 +47,7 @@
 }
 
 .todo-space-wrap .hold {
-  border: 5px dashed;
+  /* border: 1px solid; */
 }
 
 .todo-space-wrap .hovered ul {
@@ -61,4 +60,9 @@
 
 .todo-space-wrap .visible {
   display: flex;
+}
+
+.todo-space-wrap .deleted {
+  transform: translateY(100px) rotate(20deg);
+  opacity: 0;
 }
