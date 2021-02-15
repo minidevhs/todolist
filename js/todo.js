@@ -3,6 +3,18 @@ const todoInput = todoForm.querySelector("input");
 const todoSpaces = document.querySelectorAll(".todo-space");
 const editBtns = document.querySelectorAll('.fa-edit');
 
+let before = [];
+let ing = [];
+let finished = [];
+let selected = null;
+let startSpaceType = null;
+
+// local storage에 저장
+const saveTodo = (type, todos) => {
+    localStorage.setItem(type, JSON.stringify(todos));
+};
+
+
 const editTitle = (event) => {
     const parent = event.target.parentNode;
     const editBtn = event.target;
@@ -67,17 +79,6 @@ for (editBtn of editBtns) {
 
 
 
-let before = [];
-let ing = [];
-let finished = [];
-let selected = null;
-let startSpaceType = null;
-
-// local storage에 저장
-const saveTodo = (type, todos) => {
-    localStorage.setItem(type, JSON.stringify(todos));
-};
-
 // todo 삭제
 function deleteTodo(type, compare) {
     switch (type) {
@@ -107,7 +108,6 @@ const addTodo = (type, todo) => {
     const li = document.createElement("li");
     const span = document.createElement("span");
     const deleteBtn = document.createElement("i");
-    // const checkBtn = document.createElement("i");
 
     let nextId = before.length + ing.length + finished.length + 1;
     const newTodo = {
@@ -117,13 +117,12 @@ const addTodo = (type, todo) => {
 
     span.innerText = todo;
     deleteBtn.className = 'far fa-window-close';
-    // checkBtn.className = 'far fa-check-square';
     
     // 삭제 버튼
     deleteBtn.addEventListener("click", (event) => {
         const clickedBtn = event.target;
         const li = clickedBtn.parentNode;
-        const clickedSpace = li.parentNode.id;
+        const clickedSpace = li.parentNode.parentNode.id;
         li.classList.add("deleted");
         li.addEventListener("transitionend", () => {
             li.remove();
@@ -141,25 +140,9 @@ const addTodo = (type, todo) => {
        deleteBtn.className = 'far fa-window-close';
     });
 
-    // 체크 버튼, 이벤트
-    // checkBtn.addEventListener("click", (event) => {
-    //    const clickedBtn = event.target;
-    //    const li = clickedBtn.parentNode;
-
-    //    li.classList.toggle("checked");
-    //});
-
-    //checkBtn.addEventListener("mouseover", function () {
-     //   checkBtn.className = 'fas fa-check-square';
-    //});
-
-    //checkBtn.addEventListener("mouseout", function () {
-    //    checkBtn.className = 'far fa-check-square';
-    //})
     
     // li, ul에 추가
     li.id = nextId;
-    // li.appendChild(checkBtn);
     li.appendChild(span);
     li.appendChild(deleteBtn);
     li.draggable = true;
@@ -191,6 +174,7 @@ function dragStart() {
     this.className("hold");
     setTimeout(() => (this.className = "invisible"), 0);
     selected = this;
+    console.log(this);
     startSpaceId = selected.parentNode.parentNode.id;
 }
 
@@ -228,9 +212,10 @@ function dragDrop(event) {
     this.children[1].append(selected);
 
     const todo = {
-        id: selected.id,
+        id: parseInt(selected.id),
         todo: selected.children[0].textContent,
     };
+    deleteTodo(startSpaceId, selected);
 
     switch (this.id) {
         case "before":
@@ -246,7 +231,6 @@ function dragDrop(event) {
             saveTodo("finished", finished);
             break;
     }
-    deleteTodo(startSpaceId, selected);
 }
 
 
