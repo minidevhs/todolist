@@ -2,81 +2,115 @@ const todoForm = document.querySelector("#list-form");
 const todoInput = todoForm.querySelector("input");
 const todoSpaces = document.querySelectorAll(".todo-space");
 const editBtns = document.querySelectorAll('.fa-edit');
+const todoSpacesTitle = document.querySelectorAll(".todo-space .title");
 
 let before = [];
 let ing = [];
 let finished = [];
 let selected = null;
 let startSpaceType = null;
+let isEditing = false;
 
 // local storage에 저장
 const saveTodo = (type, todos) => {
     localStorage.setItem(type, JSON.stringify(todos));
 };
 
-
+// todo space 제목 수정
 const editTitle = (event) => {
-    const parent = event.target.parentNode;
-    const editBtn = event.target;
-    const text = parent.children[0].textContent;
-    parent.children[0].innerHTML = `<input type="text" value="${text}"/>`;
+    if (isEditing === false) {
+        event.stop.Propagation();
+        isEditing = true;
+        const titleWrap = event.target.parentNode;
 
-    // checkbox 만들어서 넣기
-    const i = document.createElement("i");
-    i.className = 'far fa-check-square';
-    i.addEventListener("mouseover", function () {
-        i.className = 'fas fa-check-square';
-    });
-    i.addEventListener("mouseout", function () {
-        i.className = 'far fa-check-square';
-    });
-    const input = parent.children[0].children[0];
-    if (typeof input.selectionStart == "number") {
-        input.selectionStart = input.selectionEnd = input.value.length;
-        input.focus();
-    } else if (typeof input.createTextRange != "undefined") {
-        input.focus();
-        var range = input.createTextRange();
-        range.collapse(false);
-        range.select();
-    }
-    i.addEventListener("click", (event) => {
-        const editText = event.target.parentNode.children[0].children[0].value;
-        switch (parent.parentNode.id) {
-            case "before":
-                localStorage.setItem("beforeTitle", editText);
-                break;
-            case "ing":
-                localStorage.setItem("ingTitle", editText);
-                break;
-            case "finished":
-                localStorage.setItem("finishedTitle", editText);
-                break;
-            default:
-                return;
+        const title = titleWrap.children[0];
+        const editBtn = titleWrap.children[1];
+        const text = title.textContent;
+        const form = document.createElement("input");
+        const buttonElem = document.createElement("button");
+
+        // form
+        inputElem.value = text;
+        inputElem.type = "text";
+        buttonElem.type = "submit";
+        buttonElem.className = 'far fa-check-square';
+
+        buttonElem.addEventListener("mouseenter", () => {
+            buttonElem.className = 'fas fa-check-square';
+        });
+        buttonElem.addEventListener("mouseleave", () => {
+            buttonElem.className = 'far fa-check-square';
+        });
+        form.appendChild(inputElem);
+        form.appendChild(buttonElem);
+        titleWrap.innerHTML = "";
+
+        titleWrap.appendChild(form);
+
+        // submit
+        function titleSubmit(event) {
+            event.preventDefault();
+            const todoSpaceId = titleWrap.parentNode.id;
+            const editText = inputElem.value;
+            switch (todoSpaceId) {
+                case "before":
+                    localStorage.setItem("beforeTitle", editText);
+                    break;
+                case "ing":
+                    localStorage.setItem("ingTitle", editText);
+                    break;
+                case "finished":
+                    localStorage.setItem("finishedTitle", editText);
+                    break;
+                default :
+                    return;
+            }
+            titleWrap.innerHTML = "";
+            const h3 = document.createElement("h3");
+            h3.innerText = editText;
+            titleWrap.appendChild(h3);
+            editBtn.className = 'far fa-edit';
+            titleWrap.appendChild(editBtn);
+            isEditing = false;;
         }
-        parent.children[0].innerHTML = editText;
-        editBtn.className = 'far fa-edit';
-        parent.appendChild(editBtn);
-        // checkbox 삭제
-        event.target.remove();
-    });
-    event.target.parentNode.appendChild(i);
-    // edit button 삭제
-    event.target.remove();
+        form.addEventListener("submit", titleSubmit);
+        editBtn.addEventListener("click", titleSubmit);
+
+        // input focus
+        if (typeof inputElem.selectionStart == "number") {
+            inputElem.selectionStart =
+            inputElem.slectionEnd =
+            inputElem.value.length;
+            inputElem.focus();
+        } else if (typeof inputElem.createTextRange != "undefined") {
+            inputElem.focus();
+            var range = inputElem.createTextRange();
+            range.collapse(false);
+            range.select();
+        }
+    } else {
+        return;
+    }
 };
 
-for (editBtn of editBtns) {
-    editBtn.addEventListener("click", editTitle);
-    editBtn.addEventListener("mouseover", (event) => {
-        event.target.className = 'fas fa-edit';
+// todoSpaceTitle 이벤트
+todoSpacesTitle.forEach((todoSpaceTitle) => {
+    todoSpaceTitle.addEventListener("click", editTitle);
+    todoSpaceTitle.addEventListener("mouseenter", (event) => {
+        if (isEditing === false) {
+            event.target.children[1].className = 'fas fa-edit';
+        } else {
+            return;
+        }
     });
-    editBtn.addEventListener("mouseout", (event) => {
-        event.target.className = 'far fa-edit';
+    todoSpaceTitle.addEventListener("mouseleave", (event) => {
+        if (isEditing === false) {
+            event.target.children[1].className = 'far fa-edit';
+        } else {
+            return;
+        }
     });
-}
-
-
+});
 
 
 // todo 삭제

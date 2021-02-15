@@ -12,7 +12,7 @@ const getTime = () => {
     let dayArray = ["일", "월", "화", "수", "목", "금", "토"];
     let day = dayArray[date.getDay()];
 
-    if (hour > 12){
+    if (hour >= 12){
         hour = hour - 12;
         ap = "PM";
     }

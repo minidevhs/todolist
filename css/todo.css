@@ -77,15 +77,24 @@
 }
 
 .todo-space .title {
-  display: flex;
+  display: inline-flex;
   justify-content: center;
   align-items: baseline;
   margin-bottom: 1rem;
 }
 
+.todo-space .title h3 {
+  font-weight: bold;
+  margin-right: 0.4rem;
+}
+
+.todo-space .title form {
+  height: 0;
+}
+
 .todo-space .title input {
   padding: 0.2rem 0.8rem;
-  margin: -0.5rem 0;
+  margin: 0;
 }
 
 .todo-space .title .fa-edit {
@@ -95,4 +104,9 @@
 
 .todo-space .title .fa-check-square {
   cursor: pointer;
+}
+
+.todo-space .title button {
+  color: inherit;
+  background-color: transparent;
 }
