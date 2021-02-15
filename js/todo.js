@@ -19,14 +19,15 @@ const saveTodo = (type, todos) => {
 // todo space 제목 수정
 const editTitle = (event) => {
     if (isEditing === false) {
-        event.stop.Propagation();
+        event.stopPropagation();
         isEditing = true;
         const titleWrap = event.target.parentNode;
 
         const title = titleWrap.children[0];
         const editBtn = titleWrap.children[1];
         const text = title.textContent;
-        const form = document.createElement("input");
+        const form = document.createElement("form");
+        const inputElem = document.createElement("input")
         const buttonElem = document.createElement("button");
 
         // form
@@ -71,7 +72,7 @@ const editTitle = (event) => {
             titleWrap.appendChild(h3);
             editBtn.className = 'far fa-edit';
             titleWrap.appendChild(editBtn);
-            isEditing = false;;
+            isEditing = false;
         }
         form.addEventListener("submit", titleSubmit);
         editBtn.addEventListener("click", titleSubmit);
@@ -205,7 +206,7 @@ const addTodo = (type, todo) => {
 
 // drag and drop
 function dragStart() {
-    this.className("hold");
+    this.className = "hold";
     setTimeout(() => (this.className = "invisible"), 0);
     selected = this;
     console.log(this);
@@ -330,7 +331,7 @@ const handleTodoSubmit = (event) => {
     event.preventDefault();
     const todo = todoInput.value;
     if (todo === "") {
-        alert("💥💥💥");
+        alert("할 일이 공백이에요!");
         return;
     }
     addTodo("before", todo);

@@ -23,7 +23,7 @@ const handleNameSubmit = (event) => {
     event.preventDefault();
     const name = nameInput.value;
     if (name === "") {
-        alert("💥💥💥");
+        alert("이름이 공백이에요!");
         return;
     }
     welcome(name);
