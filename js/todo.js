@@ -106,7 +106,8 @@ function deleteTodo(type, compare) {
 const addTodo = (type, todo) => {
     const li = document.createElement("li");
     const span = document.createElement("span");
-    const button = document.createElement("span");
+    const deleteBtn = document.createElement("i");
+    // const checkBtn = document.createElement("i");
 
     let nextId = before.length + ing.length + finished.length + 1;
     const newTodo = {
@@ -115,13 +116,14 @@ const addTodo = (type, todo) => {
     };
 
     span.innerText = todo;
-    button.innerHTML = '<i class="far fa-window-close"></i>';
+    deleteBtn.className = 'far fa-window-close';
+    // checkBtn.className = 'far fa-check-square';
     
     // 삭제 버튼
-    button.addEventListener("click", (event) => {
+    deleteBtn.addEventListener("click", (event) => {
         const clickedBtn = event.target;
-        const li = clickedBtn.parentNode.parentNode;
-        const clickedSpace = li.parentNode.parentNode.id;
+        const li = clickedBtn.parentNode;
+        const clickedSpace = li.parentNode.id;
         li.classList.add("deleted");
         li.addEventListener("transitionend", () => {
             li.remove();
@@ -131,18 +133,35 @@ const addTodo = (type, todo) => {
     });
 
 
-    button.addEventListener("mouseover", function () {
-        button.children[0].className = 'fas fa-window-close';
+    deleteBtn.addEventListener("mouseover", function () {
+        deleteBtn.className = 'fas fa-window-close';
     });
 
-    button.addEventListener("mouseout", function () {
-        button.children[0].className = 'far fa-window-close';
+    deleteBtn.addEventListener("mouseout", function () {
+       deleteBtn.className = 'far fa-window-close';
     });
+
+    // 체크 버튼, 이벤트
+    // checkBtn.addEventListener("click", (event) => {
+    //    const clickedBtn = event.target;
+    //    const li = clickedBtn.parentNode;
+
+    //    li.classList.toggle("checked");
+    //});
+
+    //checkBtn.addEventListener("mouseover", function () {
+     //   checkBtn.className = 'fas fa-check-square';
+    //});
+
+    //checkBtn.addEventListener("mouseout", function () {
+    //    checkBtn.className = 'far fa-check-square';
+    //})
     
     // li, ul에 추가
     li.id = nextId;
+    // li.appendChild(checkBtn);
     li.appendChild(span);
-    li.appendChild(button);
+    li.appendChild(deleteBtn);
     li.draggable = true;
     li.addEventListener("dragstart", dragStart);
     li.addEventListener("dragend", dragEnd);
@@ -169,7 +188,7 @@ const addTodo = (type, todo) => {
 
 // drag and drop
 function dragStart() {
-    this.classList.add("hold");
+    this.className("hold");
     setTimeout(() => (this.className = "invisible"), 0);
     selected = this;
     startSpaceId = selected.parentNode.parentNode.id;
